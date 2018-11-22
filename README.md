@@ -52,7 +52,7 @@ Samples of all these CSV files are provided as part of this repository. We will 
 
 You are asked to provide SQL queries that provide answers for the following questions. Note that **actors** refers to both male and female actors, unless explicitely specified otherwise. Also note that you should not rely on the data provided in the sample CSV files for any of the answers; the datasets will be replaced with bigger files. As such, there are no "correct" answers. Being able to debug your own queries is considered part of the assignment. Finally, please note that you may define views, etc, as part of other queries.
 
-* **[Q01 / 7 points]** List all the actors (first and last name) who acted in at least one film in the 90s (1990-1999, both ends inclusive) and in at least one film after 2009. Sort all actor names alphabetically (last name, first name).
+* **[Q01 / 6 points]** List all the actors (first and last name) who acted in at least one film in the 90s (1990-1999, both ends inclusive) and in at least one film after 2009. Sort all actor names alphabetically (last name, first name).
 
 * **[Q02 / 7 points]** List all the movies (title, year) that were released in the same year as the movie entitled `"Star Wars VII: The Force Awakens"`, but had a better rank than it (Note: the higher the value in the *rank* attribute, the better the rank of the movie). Sort alphabetically by movie title. 
 
@@ -60,11 +60,11 @@ You are asked to provide SQL queries that provide answers for the following ques
 
 * **[Q04 / 7 points]** Find the actor(s) (first and last name) who **only** acted in films released before 1987. Sort all actor names alphabetically (last name, first name).  
 
-* **[Q05 / 7 points]** List the top 20 directors in descending order of the number of films they directed (first name, last name, number of films directed). For simplicity, feel free to ignore ties at the number 20 spot (i.e., always show up to 20 only).   
+* **[Q05 / 8 points]** List the top 20 directors in descending order of the number of films they directed (first name, last name, number of films directed). For simplicity, feel free to ignore ties at the number 20 spot (i.e., always show up to 20 only).   
 
-* **[Q06 / 9 points]** Find the top 20 movies with the largest cast (title, number of cast members) in decreasing order. Note: show **all movies** in case of a tie for the 20th spot.  
+* **[Q06 / 8 points]** Find the top 20 movies with the largest cast (title, number of cast members) in decreasing order. Note: show **all movies** in case of a tie for the 20th spot.  
 
-* **[Q07 / 7 points]** Find the movie(s) whose cast has more actresses than actors (i.e., gender=female vs gender=male).  Show the movie title, the number of actresses, and the number of actors in the results. Sort alphabetically by movie title. 
+* **[Q07 / 8 points]** Find the movie(s) whose cast has more actresses than actors (i.e., gender=female vs gender=male).  Show the movie title, the number of actresses, and the number of actors in the results. Sort alphabetically by movie title. 
 
 * **[Q08 / 8 points]** Find all the actors who have worked with at least 6 different directors. Do not consider cases of self-directing (i.e., when the director is also an actor in a movie), but count all directors in a movie towards the threshold of 6 directors. Show the actor's first, last name, and the number of directors he/she has worked with. Sort in decreasing order of number of directors.
 
@@ -73,9 +73,7 @@ You are asked to provide SQL queries that provide answers for the following ques
 * **[Q10 / 7 points]** Find instances of nepotism between actors and directors, i.e., an actor in a movie and the director having the same last name, but a different first name. Show the last name and the title of the movie, sorted alphabetically by last name.  
 
 * **[Q11 / 9 points]** The Bacon number of an actor is the length of the *shortest path* between the actor and Kevin Bacon in the *"co-acting"* graph. That is, Kevin Bacon has Bacon number 0; all actors who acted in the same movie as him have Bacon number 1; all actors who acted in the same film as some actor with Bacon number 1 have Bacon number 2, etc. You can familiarize yourself with the concept, by visiting [The Oracle of Bacon](https://oracleofbacon.org).  
-
 The Bacon number can be trivially generalized to any actor, where we use that actor as the "anchor" actor. For this question, assume we are using "Tom Hanks" as the anchor actor, instead of Kevin Bacon. 
-
 List all actors whose **Hanks number** is 2 (first name, last name). Sort actor names alphabetically (last name, first name).
 
 * **[Q12 / 8 points]** Assume that the *popularity* of an actor is reflected by the average *rank* of all the movies he/she has acted in. Find the top 20 most popular actors (in descreasing order of popularity) -- list the actor's first/last name, the total number of movies he/she has acted, and his/her popularity score. For simplicity, feel free to ignore ties at the number 20 spot (i.e., always show up to 20 only).  
