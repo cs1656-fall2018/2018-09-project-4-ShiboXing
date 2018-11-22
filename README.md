@@ -73,7 +73,7 @@ You are asked to provide SQL queries that provide answers for the following ques
 * **[Q10 / 7 points]** Find instances of nepotism between actors and directors, i.e., an actor in a movie and the director having the same last name, but a different first name. Show the last name and the title of the movie, sorted alphabetically by last name.  
 
 * **[Q11 / 9 points]** The Bacon number of an actor is the length of the *shortest path* between the actor and Kevin Bacon in the *"co-acting"* graph. That is, Kevin Bacon has Bacon number 0; all actors who acted in the same movie as him have Bacon number 1; all actors who acted in the same film as some actor with Bacon number 1 have Bacon number 2, etc. You can familiarize yourself with the concept, by visiting [The Oracle of Bacon](https://oracleofbacon.org).  
-The Bacon number can be trivially generalized to any actor, where we use that actor as the "anchor" actor. For this question, assume we are using "Tom Hanks" as the anchor actor, instead of Kevin Bacon. 
+The Bacon number can be trivially generalized to any actor, where we use that actor as the "anchor" actor. For this question, assume we are using "Tom Hanks" as the anchor actor, instead of Kevin Bacon.  
 List all actors whose **Hanks number** is 2 (first name, last name). Sort actor names alphabetically (last name, first name).
 
 * **[Q12 / 8 points]** Assume that the *popularity* of an actor is reflected by the average *rank* of all the movies he/she has acted in. Find the top 20 most popular actors (in descreasing order of popularity) -- list the actor's first/last name, the total number of movies he/she has acted, and his/her popularity score. For simplicity, feel free to ignore ties at the number 20 spot (i.e., always show up to 20 only).  
