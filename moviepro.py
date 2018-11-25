@@ -31,34 +31,34 @@ with con:
 	########################################################################		
 	# actors.csv, cast.csv, directors.csv, movie_dir.csv, movies.csv
 	# UPDATE THIS
-
-
-
-
-
-
+	def insertInto(filename,tablename):
+		with open(filename,'r') as f:
+			reader=csv.reader(f)
+			for x in reader:
+				query='INSERT INTO '+tablename+' values('
+				for y in x[:-1]:
+					#try:
+					#	float(y)
+					#	query+=y+','
+					#except ValueError:
+					query+="'"+y+"',"
+						
+				query+="'"+x[-1]+"')"
+				print("query: ",query)
+				cur.execute(query)
 
 	########################################################################		
 	### INSERT DATA INTO DATABASE ##########################################
 	########################################################################		
 	# UPDATE THIS TO WORK WITH DATA READ IN FROM CSV FILES
-	cur.execute("INSERT INTO Actors VALUES(1001, 'Harrison', 'Ford', 'Male')") 
-	cur.execute("INSERT INTO Actors VALUES(1002, 'Daisy', 'Ridley', 'Female')")   
-
-	cur.execute("INSERT INTO Movies VALUES(101, 'Star Wars VII: The Force Awakens', 2015, 8.2)") 
-	cur.execute("INSERT INTO Movies VALUES(102, 'Rogue One: A Star Wars Story', 2016, 8.0)")
 	
-	cur.execute("INSERT INTO Cast VALUES(1001, 101, 'Han Solo')")  
-	cur.execute("INSERT INTO Cast VALUES(1002, 101, 'Rey')")  
-
-	cur.execute("INSERT INTO Directors VALUES(5000, 'J.J.', 'Abrams')")  
+	insertInto('actors.csv','Actors')
+	insertInto('movies.csv','Movies')
+	insertInto('cast.csv','Cast')
+	insertInto('directors.csv','Directors')
+	insertInto('movie_dir.csv','Movie_Director')
 	
-	cur.execute("INSERT INTO Movie_Director VALUES(5000, 101)")  
-
 	con.commit()
-    
-    	
-
 	########################################################################		
 	### QUERY SECTION ######################################################
 	########################################################################		
@@ -97,22 +97,46 @@ SELECT * FROM Movie_Director
 
 	# Q01 ########################		
 	queries['q01'] = '''
+
+	SELECT DISTINCT fname, lname FROM Actors NATURAL JOIN Cast as C
+	WHERE aid IN (SELECT aid FROM Cast NATURAL JOIN Movies WHERE year>=1990 and year<=1999) AND
+		  aid IN (SELECT aid FROM Cast NATURAL JOIN Movies WHERE year>2009)
+	ORDER BY lname ASC, fname ASC
+
 '''	
+
 	
 	# Q02 ########################		
 	queries['q02'] = '''
+	
+	SELECT title,year FROM Movies 
+	WHERE rank>(SELECT rank FROM Movies WHERE title="Star Wars VII: The Force Awakens" LIMIT 1) AND
+	year=(SELECT year FROM Movies WHERE title="Star Wars VII: The Force Awakens" LIMIT 1)
+	ORDER BY title ASC
+	
 '''	
 
 	# Q03 ########################		
 	queries['q03'] = '''
+	SELECT fname,lname FROM Actors NATURAL JOIN Cast
+	WHERE mid in (SELECT mid FROM Movies NATURAL JOIN Cast WHERE title LIKE '%Star Wars%')
+	GROUP BY fname,lname
+	ORDER BY COUNT(DISTINCT mid) DESC
 '''	
 
 	# Q04 ########################		
 	queries['q04'] = '''
+	SELECT DISTINCT fname,lname FROM ACTORS NATURAL JOIN Cast
+	WHERE NOT aid IN (SELECT aid FROM Movies NATURAL JOIN Cast WHERE year>=1987)
+	ORDER BY lname ASC, fname ASC
 '''	
 
 	# Q05 ########################		
 	queries['q05'] = '''
+	SELECT DISTINCT fname,lname,COUNT(DISTINCT mid) as num FROM Directors NATURAL JOIN Movie_Director
+	GROUP BY did
+	ORDER BY num DESC
+	LIMIT 20
 '''	
 
 	# Q06 ########################		
