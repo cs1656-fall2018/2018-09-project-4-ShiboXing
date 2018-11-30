@@ -44,7 +44,7 @@ with con:
 					query+="'"+y+"',"
 						
 				query+="'"+x[-1]+"')"
-				print("query: ",query)
+				#print("query: ",query)
 				cur.execute(query)
 
 	########################################################################		
@@ -139,32 +139,114 @@ SELECT * FROM Movie_Director
 	LIMIT 20
 '''	
 
-	# Q06 ########################		
+	# Q06 ########################	
+	
+
 	queries['q06'] = '''
+	
+	SELECT mid,title,num FROM 
+		(SELECT mid,COUNT(DISTINCT aid) AS num FROM Cast  
+		GROUP BY mid)
+	NATURAL JOIN Movies
+	WHERE num IN 
+		(SELECT num FROM 
+			(SELECT mid,COUNT(DISTINCT aid) AS num FROM Cast
+			GROUP BY mid
+			LIMIT 20)
+		)
+	ORDER BY num DESC
+
 '''	
 
 	# Q07 ########################		
 	queries['q07'] = '''
-'''	
+		
+	SELECT M.mid,title,IFNULL(Female.cnt,0) AS f, IFNULL(Male.cnt,0) AS m
+	FROM Movies as M
+	LEFT JOIN
+		(SELECT mid, COUNT(DISTINCT aid) as cnt
+		FROM Cast NATURAL JOIN Actors
+		WHERE gender='Female'
+		GROUP BY mid) as Female ON M.mid=Female.mid
+	LEFT JOIN
+		(SELECT mid, COUNT(DISTINCT aid) as cnt
+		FROM Cast NATURAL JOIN Actors
+		WHERE gender='Male'
+		GROUP BY mid) as Male ON M.mid=Male.mid 
+	WHERE f>m
+'''
 
 	# Q08 ########################		
 	queries['q08'] = '''
+	SELECT fname,lname,cnt FROM
+		(SELECT A.aid,COUNT(DISTINCT MD.did) as cnt
+		FROM Cast as C NATURAL JOIN Movie_Director as MD 
+		LEFT JOIN Directors as D ON MD.did=D.did
+		LEFT JOIN Actors as A ON C.aid=A.aid
+		WHERE NOT (D.fname=A.fname AND D.lname=A.lname)
+		GROUP BY A.aid)
+	NATURAL JOIN Actors
+	WHERE cnt>=6
+	ORDER BY cnt DESC
+
 '''	
 
 	# Q09 ########################		
 	queries['q09'] = '''
+	SELECT fname,lname,cnt FROM
+		(SELECT aid,COUNT(mid) as cnt FROM
+			(SELECT aid, MIN(year) as min_y
+			FROM Cast NATURAL JOIN Movies
+			GROUP BY aid)
+		NATURAL JOIN Actors
+		NATURAL JOIN Cast
+		NATURAL JOIN Movies
+		WHERE year = min_y
+		GROUP BY aid)
+	NATURAL JOIN Actors
+	WHERE fname LIKE 'S%'
+	ORDER BY cnt DESC
+	
 '''	
 
 	# Q10 ########################		
 	queries['q10'] = '''
+	SELECT lname, title
+	FROM Movie_Director MD NATURAL JOIN Directors NATURAL JOIN Movies
+	WHERE lname IN 
+		(SELECT lname FROM Cast C NATURAL JOIN Actors A 
+		WHERE C.mid=MD.mid)
+	ORDER BY lname
+	
 '''	
 
+	queries['q10a']='''
+	CREATE VIEW BACON_2 AS
+	SELECT DISTINCT C.mid FROM Cast C,
+		(SELECT aid,mid FROM Cast NATURAL JOIN Actors
+		WHERE mid IN
+			(SELECT mid FROM Cast NATURAL JOIN Actors
+			WHERE fname='Tom' AND lname='Hanks')
+		AND NOT (fname='Tom' AND lname='Hanks')) First
+	WHERE C.aid=First.aid AND (NOT C.mid = First.mid)
+	'''
 	# Q11 ########################		
 	queries['q11'] = '''
+	SELECT * FROM BACON_2
+
 '''	
+	queries['q11a']='''
+		DROP VIEW IF EXISTS BACON_2
+	'''
 
 	# Q12 ########################		
 	queries['q12'] = '''
+	SELECT fname,lname,cnt FROM Actors  NATURAL JOIN
+		(SELECT aid,AVG(rank) cnt FROM Cast NATURAL JOIN Movies
+		GROUP BY aid)
+	ORDER BY cnt DESC
+	LIMIT 20
+	
 '''	
 
 
