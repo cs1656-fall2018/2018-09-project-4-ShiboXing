@@ -219,25 +219,39 @@ SELECT * FROM Movie_Director
 	ORDER BY lname
 	
 '''	
-
 	queries['q10a']='''
+		SELECT mid FROM Cast NATURAL JOIN Actors
+		WHERE fname='Tom' AND lname='Hanks'
+'''
+
+	queries['q10b']='''
 	CREATE VIEW BACON_2 AS
-	SELECT DISTINCT C.mid FROM Cast C,
+	SELECT DISTINCT C.aid,C.mid FROM
 		(SELECT aid,mid FROM Cast NATURAL JOIN Actors
 		WHERE mid IN
 			(SELECT mid FROM Cast NATURAL JOIN Actors
 			WHERE fname='Tom' AND lname='Hanks')
 		AND NOT (fname='Tom' AND lname='Hanks')) First
-	WHERE C.aid=First.aid AND (NOT C.mid = First.mid)
-	'''
+	,Cast C
+	WHERE C.aid=First.aid 
+	AND NOT C.mid 
+			IN (SELECT mid FROM Cast NATURAL JOIN Actors
+			WHERE fname='Tom' AND lname='Hanks')
+'''
+
 	# Q11 ########################		
 	queries['q11'] = '''
-	SELECT * FROM BACON_2
+	SELECT DISTINCT fname,lname
+	FROM BACON_2 B,Cast C,Actors A
+	WHERE C.mid=B.mid AND NOT C.aid IN (SELECT aid FROM BACON_2)
+		  AND C.aid=A.aid 
+	ORDER BY lname ASC, fname ASC
 
 '''	
+
 	queries['q11a']='''
 		DROP VIEW IF EXISTS BACON_2
-	'''
+'''
 
 	# Q12 ########################		
 	queries['q12'] = '''
