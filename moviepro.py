@@ -126,9 +126,13 @@ SELECT * FROM Movie_Director
 
 	# Q04 ########################		
 	queries['q04'] = '''
-	SELECT DISTINCT fname,lname FROM ACTORS NATURAL JOIN Cast
-	WHERE NOT aid IN (SELECT aid FROM Movies NATURAL JOIN Cast WHERE year>=1987)
-	ORDER BY lname ASC, fname ASC
+	SELECT DISTINCT fname,lname FROM Actors NATURAL JOIN Cast
+	WHERE NOT aid IN
+		(SELECT DISTINCT aid FROM Cast NATURAL JOIN Movies WHERE year>=1987)
+	AND aid IN
+		(SELECT DISTINCT aid FROM Cast NATURAL JOIN Movies WHERE year<1987)
+	ORDER BY lname ASC,fname ASC
+
 '''	
 
 	# Q05 ########################		
